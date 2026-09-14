@@ -128,7 +128,7 @@ def audio_args(codec: str | None) -> dict:
     }
 
     if codec != "best":
-        args["final_ext"]: codec
+        args["final_ext"] = codec
 
     # Embed metadata if compatible format
     if preferred_codec in {"mp3", "m4a", "flac", "opus", "ogg"}:
