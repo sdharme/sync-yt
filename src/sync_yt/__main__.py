@@ -1,7 +1,29 @@
-from .sync_yt import sync_all, parse_config
-from pathlib import Path
-import logging as log
 import os
+from ruamel.yaml import YAML
+from ruamel.yaml.error import YAMLError
+import logging as log
+from pathlib import Path
+from .sync import SyncYT
+
+yaml = YAML()
+
+
+def parse_config(config_path: Path):
+    try:
+        with open(config_path, "r") as f:
+            config = yaml.load(f)
+    except YAMLError as e:
+        log.error("Error while parsing %r : %s", config_path, e)
+        exit(1)
+    except FileNotFoundError:
+        log.error("File at %r does not exist.", config_path)
+        exit(1)
+    except Exception as e:
+        log.error("An unexpected error occured: %s", e)
+        exit(1)
+    else:
+        log.info("Using config file: %r", config_path)
+        return config
 
 
 def main():
@@ -25,7 +47,7 @@ def main():
     sync_dir = config.get("sync_dir")
 
     if not sync_dir:
-        log.error("sync_dir not defined in config")
+        log.error('"sync_dir" not defined in config')
         exit(1)
 
     sync_dir = Path(sync_dir).expanduser()
@@ -34,7 +56,8 @@ def main():
         log.error("sync_dir does not exist: %s", sync_dir)
         exit(1)
 
-    sync_all(config)
+    sync_yt = SyncYT(config)
+    sync_yt.sync_all()
 
 
 if __name__ == "__main__":
