@@ -142,7 +142,7 @@ def audio_args(codec: str | None) -> dict:
         )
 
     # Embed thumbnail as a cover art if compatible format
-    if preferred_codec in {"mp3", "m4a", "flac"}:
+    if preferred_codec in {"mp3", "mka", "m4a", "flac", "opus", "ogg"}:
         postprocessors.extend(
             [
                 {
