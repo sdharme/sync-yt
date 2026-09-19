@@ -15,11 +15,14 @@ class SyncYT:
         self.u_src = UpstreamSource(config)
 
     def sync_playlist(self, playlist: Playlist):
-        log.info("Syncing: %r", playlist.name)
-
-        local_items = self.l_src.get(playlist)
-        db_items = self.d_src.get(playlist)
-        upstream_items = self.u_src.get(playlist)
+        try:
+            local_items = self.l_src.get(playlist)
+            db_items = self.d_src.get(playlist)
+            upstream_items = self.u_src.get(playlist)
+        except RuntimeError as e:
+            log.error(f"{e}")
+            log.error("Aborting syncing: %r", playlist.name)
+            return
 
         local_new = local_items - db_items
         local_del = db_items - local_items
@@ -54,7 +57,9 @@ class SyncYT:
             log.info("Synced: %r", playlist.name)
 
     def sync_all(self):
-        for playlist in self.config.get("playlists") or []:
+        total = len(self.config.get("playlists") or [])
+        log.info("%d playlist(s) to sync.", total)
+        for i, playlist in enumerate(self.config.get("playlists") or [], start=1):
             if not (name := playlist.get("name")):
                 log.error("Playlist name is missing. Skipping playlist.")
                 continue
@@ -63,8 +68,9 @@ class SyncYT:
                 log.error("Playlist URL is missing for %r. Skipping playlist.", name)
                 continue
 
+            log.info("Syncing (%d/%d): %r", i, total, name)
             self.sync_playlist(Playlist(name, url, playlist.get("format")))
-        log.info("Finished Syncing")
+        log.info("Finished syncing")
 
 
 # U: Upstream

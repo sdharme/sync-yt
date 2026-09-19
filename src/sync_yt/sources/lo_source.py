@@ -71,8 +71,8 @@ class LocalSource:
                 try:
                     ydl.download(item.id)
                     added_items.add(item)
-                except Exception as e:
-                    log.error("Error occured while downloading: [%s]: %s", item.id, e)
+                except Exception:
+                    log.error("Error occured while downloading: [%s]", item.id)
         return added_items
 
     def remove(self, playlist: Playlist, items: set[Item]) -> set[Item]:

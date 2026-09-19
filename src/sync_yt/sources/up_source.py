@@ -9,6 +9,7 @@ class UpstreamSource:
         self.yt_dlp_args = {
             "extract_flat": "in_playlist",
             "quiet": True,
+            "noprogress": True,
             "no_warnings": True,
             "warn_when_outdated": True,
             "js_runtimes": {"node": {}},
@@ -20,10 +21,13 @@ class UpstreamSource:
 
     def get(self, playlist: Playlist) -> set[Item]:
         with YoutubeDL(self.yt_dlp_args) as ydl:
-            info = ydl.extract_info(playlist.url, download=False)
+            try:
+                info = ydl.extract_info(playlist.url, download=False)
+            except Exception as e:
+                raise RuntimeError("Error occured while fetching playlist info.") from e
 
         items = set()
-        for entry in info["entries"] or []:
+        for entry in info.get("entries") or []:
             item = Item(entry["id"], entry["title"])
             if entry["duration"] is None:
                 log.warning("Unavailable item detected: [%s]: %r", item.id, item.name)
