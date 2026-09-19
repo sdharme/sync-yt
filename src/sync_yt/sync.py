@@ -75,7 +75,7 @@ class SyncYT:
                     i,
                     len(untracked),
                     item.id,
-                    truncate(item.name, 50),
+                    truncate(item.name, 70),
                 )
 
         if not to_download and not to_delete:

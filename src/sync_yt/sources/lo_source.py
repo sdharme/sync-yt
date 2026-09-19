@@ -15,7 +15,6 @@ class LocalSource:
             "ignoreerrors": "only_download",
             "quiet": True,
             "js_runtimes": {"node": {}},
-            "warn_when_outdated": True,
             "impersonate": ImpersonateTarget(client="chrome"),
         }
 
@@ -43,11 +42,11 @@ class LocalSource:
         path = Path(self.config["sync_dir"]).expanduser() / playlist.name
 
         if not path.is_dir():
-            log.info("Downloading new playlist at: %r", path)
+            log.info("Downloading new playlist at: '%s'", path)
             try:
                 path.mkdir(parents=True, exist_ok=True)
             except OSError as e:
-                log.error("Error creating directory %r: %s", path, e)
+                log.error("Error creating directory '%s': %s", path, e)
                 return set()
 
         args = self.yt_dlp_args.copy()
@@ -66,7 +65,7 @@ class LocalSource:
                     i,
                     total,
                     item.id,
-                    truncate(item.name, 50),
+                    truncate(item.name, 70),
                 )
                 try:
                     ydl.download(item.id)
@@ -86,7 +85,7 @@ class LocalSource:
                 i,
                 total,
                 item.id,
-                truncate(item.name, 50),
+                truncate(item.name, 70),
             )
             removed = False
             failed = False
