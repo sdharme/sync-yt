@@ -30,8 +30,8 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://pypi.org/project/sync-yt/"
-Repository = "https://github.com/sidtronics/sync-yt"
-Issues = "https://github.com/sidtronics/sync-yt/issues"
+Repository = "https://github.com/sdharme/sync-yt"
+Issues = "https://github.com/sdharme/sync-yt/issues"
 
 [project.scripts]
 sync-yt = "sync_yt:main"
