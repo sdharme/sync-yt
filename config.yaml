@@ -1,0 +1,22 @@
+# sync-yt configuration
+# Place at ~/.config/sync-yt/config.yaml
+# (Windows: C:\Users\<User>\AppData\Local\sync-yt\config.yaml)
+# or ./config.yaml in the directory you run sync-yt from.
+
+# Required. Must already exist — sync-yt won't create it.
+sync_dir: ~/Music
+
+# Optional. Only needed for private playlists.
+# Remove this line if you only sync public playlists.
+cookies_from_browser: firefox
+
+playlists:
+  # Re-encoded to mp3
+  - name: Daft Punk - Discovery
+    url: https://www.youtube.com/playlist?list=PLSdoVPM5WnndSQEXRz704yQkKwx76GvPV
+    format: mp3
+
+  # No 'format' means 'best': keeps source audio as-is, no re-encode.
+  # Usually opus or m4a from YouTube. Best quality, no transcode loss.
+  - name: Skyrim - Music & Ambience
+    url: https://www.youtube.com/playlist?list=PLdSUTU0oamrwC0PY7uUc0EJMKlWCiku43
