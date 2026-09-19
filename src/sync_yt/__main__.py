@@ -1,4 +1,5 @@
 import os
+import sys
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 import logging as log
@@ -56,7 +57,11 @@ def main():
         log.error("sync_dir does not exist: %s", sync_dir)
         exit(1)
 
-    sync_yt = SyncYT(config)
+    try:
+        sync_yt = SyncYT(config)
+    except Exception:
+        sys.exit(1)
+
     sync_yt.sync_all()
 
 

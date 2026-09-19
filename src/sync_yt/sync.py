@@ -1,8 +1,9 @@
 import logging as log
 from pathlib import Path
-from .utils import truncate
 from .domain import Playlist
 from .db import init_database
+from yt_dlp.version import __version__
+from .utils import truncate, get_latest_ytdlp_version
 from .sources import UpstreamSource, LocalSource, DatabaseSource
 
 
@@ -13,6 +14,32 @@ class SyncYT:
         self.l_src = LocalSource(config)
         self.d_src = DatabaseSource(conn)
         self.u_src = UpstreamSource(config)
+
+        ytdlp_installed_version = __version__
+
+        try:
+            ytdlp_latest_version = get_latest_ytdlp_version()
+        except Exception:
+            log.warning(
+                "Unable to check the latest yt-dlp version. Skipping version check."
+            )
+        else:
+            if ytdlp_installed_version != ytdlp_latest_version:
+                log.error(
+                    "Outdated yt-dlp detected: installed: %s, latest: %s",
+                    ytdlp_installed_version,
+                    ytdlp_latest_version,
+                )
+                log.error(
+                    "Please update yt-dlp using: "
+                    "'pip install -U yt-dlp' or your package manager."
+                )
+                raise RuntimeError("Outdated yt_dlp detected")
+
+            log.info(
+                "yt-dlp is up to date: version: %s",
+                ytdlp_installed_version,
+            )
 
     def sync_playlist(self, playlist: Playlist):
         try:
