@@ -15,13 +15,13 @@ def parse_config(config_path: Path):
             config = yaml.load(f)
     except YAMLError as e:
         log.error("Error while parsing '%s' : %s", config_path, e)
-        exit(1)
+        sys.exit(1)
     except FileNotFoundError:
         log.error("File at '%s' does not exist.", config_path)
-        exit(1)
+        sys.exit(1)
     except Exception as e:
         log.error("An unexpected error occured: %s", e)
-        exit(1)
+        sys.exit(1)
     else:
         log.info("Using config file: '%s'", config_path)
         return config
@@ -49,13 +49,13 @@ def main():
 
     if not sync_dir:
         log.error('"sync_dir" not defined in config')
-        exit(1)
+        sys.exit(1)
 
     sync_dir = Path(sync_dir).expanduser()
 
     if not sync_dir.exists():
         log.error("sync_dir does not exist: %s", sync_dir)
-        exit(1)
+        sys.exit(1)
 
     try:
         sync_yt = SyncYT(config)
