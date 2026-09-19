@@ -8,7 +8,7 @@ from .sources import UpstreamSource, LocalSource, DatabaseSource
 
 class SyncYT:
     def __init__(self, config):
-        conn = init_database(Path(config["sync_dir"]).expanduser() / "sync_yt.db")
+        conn = init_database(Path(config["sync_dir"]).expanduser() / ".sync_yt.db")
         self.config = config
         self.l_src = LocalSource(config)
         self.d_src = DatabaseSource(conn)
