@@ -60,12 +60,14 @@ class LocalSource:
 
         with YoutubeDL(args) as ydl:
             for i, item in enumerate(items, start=1):
+                name = truncate(item.name, 70) if item.name else "[Unavailable]"
                 log.info(
                     "Downloading (%r: %d/%d): [%s]: %r",
+                    playlist.name,
                     i,
                     total,
                     item.id,
-                    truncate(item.name, 70),
+                    name
                 )
                 try:
                     ydl.download(item.id)
@@ -80,12 +82,14 @@ class LocalSource:
         removed_items = set()
         total = len(items)
         for i, item in enumerate(items, start=1):
+            name = truncate(item.name, 70) if item.name else "[Unavailable]"
             log.info(
                 "Removing (%r: %d/%d): [%s]: %r",
+                playlist.name,
                 i,
                 total,
                 item.id,
-                truncate(item.name, 70),
+                name
             )
             removed = False
             failed = False
