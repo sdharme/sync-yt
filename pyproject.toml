@@ -38,3 +38,6 @@ sync-yt = "sync_yt:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "sync_yt.__version__"}
+
+[tool.setuptools.package-data]
+sync_yt = ["migrations/*.sql"]
