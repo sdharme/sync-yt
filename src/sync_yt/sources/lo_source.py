@@ -61,7 +61,7 @@ class LocalSource:
         with YoutubeDL(args) as ydl:
             for i, item in enumerate(items, start=1):
                 log.info(
-                    "Downloading (%d/%d): [%s]: %r",
+                    "Downloading (%r: %d/%d): [%s]: %r",
                     i,
                     total,
                     item.id,
@@ -81,7 +81,7 @@ class LocalSource:
         total = len(items)
         for i, item in enumerate(items, start=1):
             log.info(
-                "Removing (%d/%d): [%s]: %r",
+                "Removing (%r: %d/%d): [%s]: %r",
                 i,
                 total,
                 item.id,
